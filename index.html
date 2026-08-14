@@ -143,11 +143,11 @@
                 processVoiceCommand(transcript);
             };
         }
-
         function processVoiceCommand(cmd) {
             const text = cmd.toLowerCase().trim();
             let reply = "I heard you say: '" + cmd + "'. Ask me any math question or say hello!";
 
+            // 1. FIXED MATH CALCULATOR CORE
             if (text.includes('plus') || text.includes('+') || text.includes('add')) {
                 let numbers = text.match(/\d+/g);
                 if (numbers && numbers.length >= 2) {
@@ -169,6 +169,8 @@
                     reply = numbers[0] + " times " + numbers[1] + " equals " + result + ", boss!";
                 }
             }
+
+            // 2. FUN CHAT COMMANDS
             else if (text.includes('hello') || text.includes('hi')) {
                 reply = "Hello! Welcome to your custom command terminal. I am online and ready, boss!";
             }
@@ -190,6 +192,7 @@
             document.getElementById('ai-response').innerText = reply;
             speakText(reply);
         }
+
 
         function toggleListening() {
             if (!recognition) return;
