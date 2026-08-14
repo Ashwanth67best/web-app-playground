@@ -29,16 +29,17 @@
                 <p class="subtitle">Please sign in to access your secure voice portal dashboard.</p>
                 <div id="login-error" style="color: #ff4d4d; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Invalid credentials!</div>
 
-                <!-- Fixed form submit to properly run our login function -->
                 <form id="login-form" onsubmit="handleLogin(event)">
                     <div class="input-group">
                         <label>Username</label>
                         <input type="text" id="username" placeholder="Enter 'admin'..." required>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" style="position: relative;">
                         <label>Password</label>
-                        <input type="password" id="password" placeholder="Enter 'nexus123'..." required>
+                        <input type="password" id="password" placeholder="Enter 'nexus123'..." required style="padding-right: 3rem;">
+                        <span id="toggle-password-eye" onclick="togglePasswordVisibility()">👁️</span>
                     </div>
+
                     <button type="submit" class="login-btn">LOGIN &rarr;</button>
                 </form>
             </div>
@@ -57,13 +58,11 @@
             <h1 class="dash-title">Ashwanth Voice System v1.0</h1>
             <p class="dash-status">SYSTEM STATUS: <span style="color: #00C49A; font-weight: bold;">ONLINE</span></p>
 
-            <!-- Glowing Voice Portal Orb -->
             <div class="orb-container">
                 <div id="voice-orb" class="orb-pulsing" onclick="toggleListening()"></div>
                 <p id="orb-instruction">Click the Orb to Speak</p>
             </div>
 
-            <!-- Command Log Boxes -->
             <div class="terminal-grid">
                 <div class="terminal-box">
                     <h3>🗣️ What You Said:</h3>
@@ -71,13 +70,13 @@
                 </div>
                 <div class="terminal-box">
                     <h3>🤖 Smart AI Response:</h3>
-                    <p id="ai-response" class="log-text">System loaded. Ask me absolutely anything!</p>
+                    <p id="ai-response" class="log-text">System loaded. Ask me any math question or say hello!</p>
                 </div>
             </div>
         </main>
     </div>
 
-        <!-- ADVANCED AI AUDIO SCRIPT -->
+    <!-- ADVANCED AI AUDIO SCRIPT -->
     <script>
         function handleLogin(event) {
             if (event) event.preventDefault();
@@ -88,7 +87,7 @@
             if (user === "admin" && pass === "nexus123") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-screen').style.display = 'block';
-                speakText("Welcome back, Boss. System is online. Ask me anything.");
+                speakText("Welcome back, Boss. System is online. Ask me any math question.");
             } else {
                 document.getElementById('login-error').style.display = 'block';
             }
@@ -100,6 +99,19 @@
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.getElementById('login-error').style.display = 'none';
+        }
+
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const eyeIcon = document.getElementById('toggle-password-eye');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.innerText = '🔒';
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.innerText = '👁️';
+            }
         }
 
         let isListening = false;
@@ -132,11 +144,10 @@
             };
         }
 
-                    async function processVoiceCommand(cmd) {
+        function processVoiceCommand(cmd) {
             const text = cmd.toLowerCase().trim();
             let reply = "I heard you say: '" + cmd + "'. Ask me any math question or say hello!";
 
-            // 1. ADVANCED MATH CALCULATOR CORE (Works completely offline!)
             if (text.includes('plus') || text.includes('+') || text.includes('add')) {
                 let numbers = text.match(/\d+/g);
                 if (numbers && numbers.length >= 2) {
@@ -158,8 +169,6 @@
                     reply = numbers[0] + " times " + numbers[1] + " equals " + result + ", boss!";
                 }
             }
-
-            // 2. FUN CHAT COMMANDS
             else if (text.includes('hello') || text.includes('hi')) {
                 reply = "Hello! Welcome to your custom command terminal. I am online and ready, boss!";
             }
@@ -178,7 +187,6 @@
                 reply = jokes[Math.floor(Math.random() * jokes.length)];
             }
 
-            // Update the screen and talk out loud instantly
             document.getElementById('ai-response').innerText = reply;
             speakText(reply);
         }
