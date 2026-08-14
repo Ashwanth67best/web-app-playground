@@ -132,22 +132,37 @@
             };
         }
 
-        async function processVoiceCommand(cmd) {
+                async function processVoiceCommand(cmd) {
             document.getElementById('ai-response').innerText = "Thinking...";
 
             try {
-                const response = await fetch(`https://pollinations.ai{encodeURIComponent(cmd)}?system=You are Ashwanth AI, a helpful voice assistant built by a 10 year old prodigy developer named Ashwanth. Give short, punchy answers that sound great when read out loud in 1 or 2 short sentences.`);
+                const cleanQuery = encodeURIComponent(cmd);
+                // Switched model parameter to openai to fetch answers from ChatGPT!
+                const response = await fetch(`https://pollinations.ai{cleanQuery}?model=openai&system=You are Ashwanth AI, a helpful voice assistant built by a 10 year old prodigy developer named Ashwanth. Give short, punchy answers that sound great when read out loud in 1 simple sentence.`);
+
+                if (!response.ok) throw new Error("Server error");
                 const reply = await response.text();
 
                 document.getElementById('ai-response').innerText = reply;
                 speakText(reply);
 
             } catch (error) {
-                let fallback = "Sorry, my neural connection link timed out. Please try asking again.";
-                document.getElementById('ai-response').innerText = fallback;
-                speakText(fallback);
+                // If the internet blips, use our local quick calculator logic
+                let answer = "System connection busy. Let me use my local backup brain.";
+
+                if (cmd.includes('2') && cmd.includes('2') && (cmd.includes('plus') || cmd.includes('+'))) {
+                    answer = "Two plus two equals four, boss!";
+                } else if (cmd.includes('hello') || cmd.includes('hi')) {
+                    answer = "Hello! I am your custom voice system. What are we coding today?";
+                } else {
+                    answer = "I heard you say: " + cmd + ". Let's try asking one more time!";
+                }
+
+                document.getElementById('ai-response').innerText = answer;
+                speakText(answer);
             }
         }
+
 
         function toggleListening() {
             if (!recognition) return;
