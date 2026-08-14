@@ -3,58 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Premium Portal</title>
+    <title>Nexus Core OS</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="split-container">
-
-        <!-- Left Side: Branding and Quotes -->
+    <!-- SECTION 1: THE LOGIN SCREEN (Keeps your dad's split layout style) -->
+    <div id="login-screen" class="split-container">
         <div class="left-panel">
             <div class="logo-container">
                 <img src="nexus_logo.png" alt="Nexus Logo" class="logo-img">
             </div>
-
             <div class="quote-center">
                 <span class="quote-icon">“</span>
                 <h1 class="heading">Unlock Your <span class="highlight">Potential</span></h1>
                 <p class="quote-text">"The secret of getting ahead is getting started. The complex is made simple one step at a time."</p>
                 <p class="author">— Mark Twain</p>
             </div>
-
-            <div class="footer-left">
-                <!-- Left blank for clean spacing -->
-            </div>
+            <div></div>
         </div>
 
-        <!-- Right Side: Clean Login Form -->
         <div class="right-panel">
             <div class="login-card">
                 <h2>Account Authorization</h2>
                 <p class="subtitle">Please sign in to access your secure portal dashboard.</p>
-
-                <form>
+                <div id="login-error" style="color: #ff4d4d; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Invalid credentials!</div>
+                <form id="login-form" onsubmit="handleLogin(event)">
                     <div class="input-group">
-                        <label for="username">Username or Email</label>
-                        <input type="email" id="username" placeholder="Enter your username..." required>
+                        <label>Username or Email</label>
+                        <input type="text" id="username" placeholder="Enter 'admin'..." required>
                     </div>
-
                     <div class="input-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="••••••••" required>
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="Enter 'nexus123'..." required>
                     </div>
-
                     <button type="submit" class="login-btn">LOGIN &rarr;</button>
                 </form>
             </div>
-
-            <div class="copyright">
-                Copyright &copy; 1998, 2026. All rights reserved.
-            </div>
+            <div class="copyright">Copyright &copy; 1998, 2026. All rights reserved.</div>
         </div>
-
     </div>
 
+    <!-- SECTION 2: THE SCI-FI VOICE ASSISTANT MAIN PORTAL (Hidden until logged in) -->
+    <div id="dashboard-screen" class="dashboard-container" style="display: none;">
+        <header class="dash-header">
+            <img src="nexus_logo.png" alt="Nexus Logo" class="logo-img">
+            <button class="logout-btn" onclick="handleLogout()">LOGOUT 🚪</button>
+        </header>
+
+        <main class="dash-main">
+            <h1 class="dash-title">Nexus AI Voice Assistant</h1>
+            <p class="dash-status">SYSTEM STATUS: <span style="color: #00C49A; font-weight: bold;">ONLINE</span></p>
+
+            <!-- Glowing Voice Portal Orb -->
+            <div class="orb-container">
+                <div id="voice-orb" class="orb-pulsing" onclick="toggleListening()"></div>
+                <p id="orb-instruction">Click the Orb to Speak</p>
+            </div>
+
+            <!-- Command Log Boxes -->
+            <div class="terminal-grid">
+                <div class="terminal-box">
+                    <h3>🗣️ What You Said:</h3>
+                    <p id="user-transcript" class="log-text">Waiting for microphone input...</p>
+                </div>
+                <div class="terminal-box">
+                    <h3>🤖 Nexus Response:</h3>
+                    <p id="ai-response" class="log-text">System loaded. Ready for commands.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- AUDIO CORE LOGIC SCRIPT -->
+    <script>
+        // Simple security login checkers
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            if(user === "admin" && pass === "nexus123") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard-screen').style.display = 'block';
+                speakText("Welcome back, Administrator. Nexus system is active.");
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function handleLogout() {
+            document.getElementById('dashboard-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+
+        // Voice Command AI Recognition Engine (Web Speech API)
+        let isListening = false;
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                isListening = true;
+                document.getElementById('voice-orb').style.boxShadow = '0 0 50px #ff4d4d';
+                document.getElementById('voice-orb').style.background = '#ff4d4d';
+                document.getElementById('orb-instruction').innerText = "Listening closely...";
+            };
+
+            recognition.onend = function() {
+                isListening = false;
+                document.getElementById('voice-orb').style.boxShadow = '0 0 30px #00C49A';
+                document.getElementById('voice-orb').style.background = '#00A878';
+                document.getElementById('orb-instruction').innerText = "Click Orb to Speak Again";
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                document.getElementById('user-transcript').innerText = transcript;
+                processVoiceCommand(transcript);
+            };
+        } else {
+            alert("Your browser does not support voice features. Try using Google Chrome!");
+        }
+
+        function toggleListening() {
+            if (!recognition) return;
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        // AI Assistant Core Command Process Engine
+        function processVoiceCommand(cmd) {
+            let reply = "I heard you, but I do not recognize that specific database command.";
+
+            if (cmd.includes('hello') || cmd.includes('hi ')) {
+                reply = "Hello! I am Nexus, your personal AI software module. How can I help you today?";
+            } else if (cmd.includes('name')) {
+                reply = "My structural name parameters are set to Nexus AI Version 1.0.";
+            } else if (cmd.includes('old') || cmd.includes('age')) {
+                reply = "System matrix deployment logs date back to August 2026. However, my developer Ashwanth is an incredible 10 year old prodigy programmer.";
+            } else if (cmd.includes('dad')) {
+                reply = "Ashwanth's dad spent 1,000 rupees on a template, but Ashwanth engineered this advanced voice module for completely zero cost parameters!";
+            } else if (cmd.includes('time')) {
+                const now = new Date();
+                reply = "Current internal clock registry indicates it is exactly " + now.toLocaleTimeString();
+            }
+
+            document.getElementById('ai-response').innerText = reply;
+            speakText(reply);
+        }
+
+        // Text to Speech Voice Output Engine
+        function speakText(text) {
+            window.speechSynthesis.cancel(); // Clear old speech queues
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
 </body>
 </html>

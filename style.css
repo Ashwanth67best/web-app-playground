@@ -1,4 +1,4 @@
-/* Reset default browser margins */
+/* Base Screen System Layout Parameters */
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +6,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Create the perfect 50/50 split screen layout */
 .split-container {
     display: flex;
     height: 100vh;
@@ -14,7 +13,6 @@
     overflow: hidden;
 }
 
-/* Left Side Panel Design */
 .left-panel {
     width: 50%;
     background-color: #ffffff;
@@ -70,7 +68,6 @@
     letter-spacing: 1px;
 }
 
-/* Right Side Panel Design with Premium Teal Gradient */
 .right-panel {
     width: 50%;
     background: linear-gradient(135deg, #00A878 0%, #00C49A 100%);
@@ -82,7 +79,6 @@
     position: relative;
 }
 
-/* Glass-style Floating Login Card */
 .login-card {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(16px);
@@ -106,10 +102,8 @@
     color: rgba(255, 255, 255, 0.8);
     font-size: 0.95rem;
     margin-bottom: 2rem;
-    line-height: 1.4;
 }
 
-/* Form input styling */
 .input-group {
     margin-bottom: 1.5rem;
     display: flex;
@@ -131,21 +125,8 @@
     color: #ffffff;
     font-size: 1rem;
     outline: none;
-    transition: all 0.2s ease;
 }
 
-/* Light up input box when clicked */
-.input-group input:focus {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #ffffff;
-}
-
-/* Hide placeholder text properly */
-.input-group input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* Beautiful Rounded Login Button */
 .login-btn {
     width: 100%;
     padding: 1rem;
@@ -157,14 +138,7 @@
     font-weight: 700;
     cursor: pointer;
     margin-top: 1rem;
-    transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-/* Make button lift up smoothly when hovered over */
-.login-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .copyright {
@@ -172,5 +146,113 @@
     bottom: 2rem;
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.85rem;
-    letter-spacing: 0.5px;
+}
+
+/* PREMIUM SCI-FI VOICE ASSISTANT MAIN ROOM DESIGN */
+.dashboard-container {
+    background-color: #0b0f19;
+    color: #ffffff;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1f293d;
+    padding-bottom: 1rem;
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dash-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.dash-title {
+    font-size: 2.5rem;
+    letter-spacing: -0.5px;
+}
+
+.dash-status {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+}
+
+/* Glowing Pulsing Interactive AI Voice Orb */
+.orb-container {
+    margin: 4rem 0;
+}
+
+#voice-orb {
+    width: 140px;
+    height: 140px;
+    background: #00A878;
+    border-radius: 50%;
+    box-shadow: 0 0 30px #00C49A;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.orb-pulsing {
+    animation: floatingOrb 2s infinite ease-in-out;
+}
+
+@keyframes floatingOrb {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+#orb-instruction {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #9CA3AF;
+    font-weight: 600;
+}
+
+/* Command Feed Terminal Blocks */
+.terminal-grid {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 2rem;
+}
+
+.terminal-box {
+    width: 50%;
+    background-color: #111827;
+    border: 1px solid #1f293d;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: left;
+}
+
+.terminal-box h3 {
+    font-size: 1rem;
+    color: #9CA3AF;
+    margin-bottom: 0.5rem;
+}
+
+.log-text {
+    font-family: monospace;
+    font-size: 1.1rem;
+    color: #e5e7eb;
 }
