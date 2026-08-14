@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashwanth Core OS</title>
+    <title>Ashwanth Orbit Command</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Leaflet CSS for the live global tracking maps -->
+    <link rel="stylesheet" href="https://unpkg.com" />
 </head>
 <body>
 
-    <!-- SECTION 1: THE LOGIN SCREEN (Customized Layout) -->
+    <!-- SECTION 1: THE LOGIN SCREEN (Sleek Security Gate) -->
     <div id="login-screen" class="split-container">
         <div class="left-panel">
             <div class="logo-container">
-                <h2 class="main-logo-text">Ashwanth<span>.AI</span></h2>
+                <h2 class="main-logo-text">Ashwanth<span>.Space</span></h2>
             </div>
             <div class="quote-center">
-                <span class="quote-icon">“</span>
-                <h1 class="heading">The Ultimate <span class="highlight">Voice Terminal</span></h1>
-                <p class="quote-text">"The best way to predict the future is to invent it."</p>
-                <p class="author">— Alan Kay</p>
+                <span class="quote-icon">🛰️</span>
+                <h1 class="heading">Orbit Tracker <span class="highlight">Command Center</span></h1>
+                <p class="quote-text">"Earth is the cradle of humanity, but one cannot live in a cradle forever."</p>
+                <p class="author">— Konstantin Tsiolkovsky</p>
             </div>
             <div></div>
         </div>
@@ -26,57 +28,64 @@
         <div class="right-panel">
             <div class="login-card">
                 <h2>System Authorization</h2>
-                <p class="subtitle">Please sign in to access your secure voice portal dashboard.</p>
-                <div id="login-error" style="color: #ff4d4d; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Invalid credentials!</div>
+                <p class="subtitle">Enter secure developer codes to synchronize satellite radar data arrays.</p>
+                <div id="login-error" style="color: #ff4d4d; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Access Code Rejected.</div>
                 <form id="login-form" onsubmit="handleLogin(event)">
                     <div class="input-group">
-                        <label>Username</label>
-                        <!-- Fixed to text type so 'admin' works with no errors! -->
+                        <label>User Identifier</label>
                         <input type="text" id="username" placeholder="Enter 'admin'..." required>
                     </div>
                     <div class="input-group">
-                        <label>Password</label>
+                        <label>Security Key</label>
                         <input type="password" id="password" placeholder="Enter 'nexus123'..." required>
                     </div>
-                    <button type="submit" class="login-btn">LOGIN &rarr;</button>
+                    <button type="submit" class="login-btn">BOOT UP SYSTEM &rarr;</button>
                 </form>
             </div>
-            <div class="copyright">Copyright &copy; 2026 Ashwanth. All rights reserved.</div>
+            <div class="copyright">Copyright &copy; 2026 Ashwanth Aerospace.</div>
         </div>
     </div>
 
-    <!-- SECTION 2: THE SCI-FI VOICE ASSISTANT MAIN PORTAL -->
+    <!-- SECTION 2: THE HIGH-TECH FLIGHT RADAR DASHBOARD -->
     <div id="dashboard-screen" class="dashboard-container" style="display: none;">
         <header class="dash-header">
-            <h2 class="main-logo-text" style="color: white;">Ashwanth<span>.AI</span></h2>
-            <button class="logout-btn" onclick="handleLogout()">LOGOUT 🚪</button>
+            <h2 class="main-logo-text" style="color: white;">Ashwanth<span>.Space</span></h2>
+            <button class="logout-btn" onclick="handleLogout()">SHUTDOWN CORE 🚪</button>
         </header>
 
-        <main class="dash-main">
-            <h1 class="dash-title">Ashwanth Voice System v1.0</h1>
-            <p class="dash-status">SYSTEM STATUS: <span style="color: #00C49A; font-weight: bold;">ONLINE</span></p>
-
-            <!-- Glowing Voice Portal Orb -->
-            <div class="orb-container">
-                <div id="voice-orb" class="orb-pulsing" onclick="toggleListening()"></div>
-                <p id="orb-instruction">Click the Orb to Speak</p>
+        <main class="dash-main-grid">
+            <!-- Left Side Data Metrics -->
+            <div class="metrics-panel">
+                <div class="metric-card">
+                    <h3>⚡ VELOCITY</h3>
+                    <p id="stat-speed" class="stat-highlight">27,600 km/h</p>
+                </div>
+                <div class="metric-card">
+                    <h3>🌍 CURRENT ALTITUDE</h3>
+                    <p id="stat-altitude" class="stat-highlight">420 km</p>
+                </div>
+                <div class="metric-card">
+                    <h3>📍 LATITUDE / LONGITUDE</h3>
+                    <p id="stat-coords" class="stat-normal">Loading telemetry...</p>
+                </div>
+                <div class="console-box">
+                    <h3>🖥️ Core Stream Log Feed:</h3>
+                    <div id="console-logs" class="log-stream">
+                        [INFO] Core terminal initialized...<br>
+                        [SUCCESS] Synchronized tracking links...
+                    </div>
+                </div>
             </div>
 
-            <!-- Command Log Boxes -->
-            <div class="terminal-grid">
-                <div class="terminal-box">
-                    <h3>🗣️ What You Said:</h3>
-                    <p id="user-transcript" class="log-text">Waiting for microphone input...</p>
-                </div>
-                <div class="terminal-box">
-                    <h3>🤖 System Response:</h3>
-                    <p id="ai-response" class="log-text">System loaded. Ready for commands.</p>
-                </div>
+            <!-- Right Side Live Interactive Tracking Map -->
+            <div class="map-panel">
+                <div id="live-radar-map"></div>
             </div>
         </main>
     </div>
 
-    <!-- AUDIO CORE LOGIC SCRIPT -->
+    <!-- Leaflet JS Map Scripts -->
+    <script src="https://unpkg.com"></script>
     <script>
         function handleLogin(event) {
             event.preventDefault();
@@ -86,78 +95,74 @@
             if(user === "admin" && pass === "nexus123") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-screen').style.display = 'block';
-                speakText("Welcome back, Boss. System is online and ready.");
+
+                // Initialize the live world map layout
+                setTimeout(initSpaceRadar, 200);
             } else {
                 document.getElementById('login-error').style.display = 'block';
             }
         }
 
         function handleLogout() {
+            clearInterval(trackingInterval);
             document.getElementById('dashboard-screen').style.display = 'none';
             document.getElementById('login-screen').style.display = 'flex';
         }
 
-        let isListening = false;
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let recognition;
+        // Live Space Data API Tracker Engine
+        let map, stationMarker;
+        let trackingInterval;
 
-        if (SpeechRecognition) {
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.lang = 'en-US';
+        function initSpaceRadar() {
+            // Setup the mapping grid centered on the world
+            if (!map) {
+                map = L.map('live-radar-map').setView([0, 0], 2);
+                L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
+                    attribution: 'OpenStreetMap'
+                }).addTo(map);
 
-            recognition.onstart = function() {
-                isListening = true;
-                document.getElementById('voice-orb').style.boxShadow = '0 0 50px #ff4d4d';
-                document.getElementById('voice-orb').style.background = '#ff4d4d';
-                document.getElementById('orb-instruction').innerText = "Listening closely...";
-            };
-
-            recognition.onend = function() {
-                isListening = false;
-                document.getElementById('voice-orb').style.boxShadow = '0 0 30px #00C49A';
-                document.getElementById('voice-orb').style.background = '#00A878';
-                document.getElementById('orb-instruction').innerText = "Click Orb to Speak Again";
-            };
-
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript.toLowerCase();
-                document.getElementById('user-transcript').innerText = transcript;
-                processVoiceCommand(transcript);
-            };
-        }
-
-        function toggleListening() {
-            if (!recognition) return;
-            if (isListening) {
-                recognition.stop();
-            } else {
-                recognition.start();
-            }
-        }
-
-        function processVoiceCommand(cmd) {
-            let reply = "I heard you, but that command is not in my database.";
-
-            if (cmd.includes('hello') || cmd.includes('hi')) {
-                reply = "Hello! I am your personal AI assistant software module. How can I help you today?";
-            } else if (cmd.includes('name')) {
-                reply = "My system name is Ashwanth AI, custom built from scratch.";
-            } else if (cmd.includes('old') || cmd.includes('age')) {
-                reply = "My software matrix was updated today. But my creator, Ashwanth, is an awesome ten year old coder.";
-            } else if (cmd.includes('time')) {
-                const now = new Date();
-                reply = "The current time is exactly " + now.toLocaleTimeString();
+                // Simple customized dot marker representing the spaceship
+                stationMarker = L.circleMarker([0, 0], {
+                    color: '#00C49A',
+                    radius: 10,
+                    fillColor: '#00A878',
+                    fillOpacity: 0.8
+                }).addTo(map);
             }
 
-            document.getElementById('ai-response').innerText = reply;
-            speakText(reply);
+            // Immediately query the open-source satellite position databases
+            fetchSpaceData();
+            // Continuously ping the database every 3 seconds for live movements
+            trackingInterval = setInterval(fetchSpaceData, 3000);
         }
 
-        function speakText(text) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            window.speechSynthesis.speak(utterance);
+        async function fetchSpaceData() {
+            try {
+                const response = await fetch('https://wheretheiss.at');
+                const data = await response.json();
+
+                const lat = data.latitude.toFixed(4);
+                const lon = data.longitude.toFixed(4);
+                const alt = data.altitude.toFixed(1) + " km";
+                const speed = Math.round(data.velocity) + " km/h";
+
+                // Update the visual metric telemetry text grids dynamically
+                document.getElementById('stat-speed').innerText = speed;
+                document.getElementById('stat-altitude').innerText = alt;
+                document.getElementById('stat-coords').innerText = `LAT: ${lat} | LON: ${lon}`;
+
+                // Reposition our radar circle across the world vector mapping grid
+                stationMarker.setLatLng([lat, lon]);
+                map.panTo([lat, lon]);
+
+                // Append an active data stream log note entry lines
+                const logs = document.getElementById('console-logs');
+                logs.innerHTML += `<br><span style="color:#00C49A">[PING]</span> Vector adjusted: [${lat}, ${lon}]`;
+                logs.scrollTop = logs.scrollHeight; // Auto scroll tracker text windows down
+
+            } catch (error) {
+                document.getElementById('console-logs').innerHTML += `<br><span style="color:#ff4d4d">[ERR]</span> Dropped signal. Retrying connection...`;
+            }
         }
     </script>
 </body>

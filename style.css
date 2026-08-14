@@ -38,12 +38,9 @@
 }
 
 .quote-icon {
-    font-size: 6rem;
-    color: rgba(0, 196, 154, 0.2);
-    font-family: serif;
+    font-size: 4rem;
     display: block;
-    line-height: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .heading {
@@ -152,20 +149,21 @@
     font-size: 0.85rem;
 }
 
-/* MAIN DASHBOARD DESIGN */
+/* HIGH-END DATA SPACESHIP DASHBOARD ROOM STYLING */
 .dashboard-container {
-    background-color: #0b0f19;
+    background-color: #060913;
     color: #ffffff;
     min-height: 100vh;
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .dash-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #1f293d;
+    border-bottom: 1px solid #141b2d;
     padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .logout-btn {
@@ -178,83 +176,86 @@
     cursor: pointer;
 }
 
-.dash-main {
+.dash-main-grid {
+    display: flex;
+    gap: 1.5rem;
+    height: calc(100vh - 100px);
+}
+
+/* Left Half Panels */
+.metrics-panel {
+    width: 35%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 3rem;
+    gap: 1rem;
 }
 
-.dash-title {
-    font-size: 2.5rem;
-    letter-spacing: -0.5px;
-}
-
-.dash-status {
-    color: #9CA3AF;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    margin-top: 0.5rem;
-}
-
-.orb-container {
-    margin: 4rem 0;
-}
-
-#voice-orb {
-    width: 140px;
-    height: 140px;
-    background: #00A878;
-    border-radius: 50%;
-    box-shadow: 0 0 30px #00C49A;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.orb-pulsing {
-    animation: floatingOrb 2s infinite ease-in-out;
-}
-
-@keyframes floatingOrb {
-    0% { transform: scale(1); opacity: 0.9; }
-    50% { transform: scale(1.08); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.9; }
-}
-
-#orb-instruction {
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: #9CA3AF;
-    font-weight: 600;
-}
-
-.terminal-grid {
-    display: flex;
-    gap: 2rem;
-    width: 100%;
-    max-width: 900px;
-    margin-top: 2rem;
-}
-
-.terminal-box {
-    width: 50%;
-    background-color: #111827;
-    border: 1px solid #1f293d;
+.metric-card {
+    background-color: #0f1626;
+    border: 1px solid #1f2a45;
     padding: 1.5rem;
     border-radius: 16px;
-    text-align: left;
 }
 
-.terminal-box h3 {
-    font-size: 1rem;
-    color: #9CA3AF;
+.metric-card h3 {
+    font-size: 0.85rem;
+    color: #707e94;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
 }
 
-.log-text {
+.stat-highlight {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #00C49A;
     font-family: monospace;
-    font-size: 1.1rem;
-    color: #e5e7eb;
+}
+
+.stat-normal {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    font-family: monospace;
+}
+
+/* Matrix Scrolling Console Log Frame */
+.console-box {
+    background-color: #02040a;
+    border: 1px solid #141b2d;
+    padding: 1rem;
+    border-radius: 12px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.console-box h3 {
+    font-size: 0.8rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.log-stream {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    color: #a0aec0;
+    overflow-y: auto;
+    flex-grow: 1;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Right Half Live Radar Map Frame Container */
+.map-panel {
+    width: 65%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #1f2a45;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+#live-radar-map {
+    width: 100%;
+    height: 100%;
+    background-color: #060913;
 }
