@@ -9,14 +9,6 @@ st.markdown("""
     header, footer {
         visibility: hidden !important;
     }
-    .brand {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #111827;
-    }
-    .brand span {
-        color: #00A878;
-    }
     .main-heading {
         font-size: 3rem;
         font-weight: 800;
@@ -63,9 +55,15 @@ if not st.session_state.logged_in:
     # Make two clean, balanced screen halves using Streamlit's official columns
     left_col, right_col = st.columns(2, gap="large")
 
-    # Left Half: Clean Text Layout
+    # Left Half: Clean Text Layout + Real Image Logo
     with left_col:
-        st.markdown('<div class="brand">ne<span>x</span>us</div>', unsafe_allow_html=True)
+        # Load the official logo asset safely
+        try:
+            st.image("nexus_logo.png", width=180)
+        except:
+            # Fallback text just in case the file name doesn't match yet
+            st.markdown('<h2 style="color:#111827;">nexus</h2>', unsafe_allow_html=True)
+
         st.markdown('<div class="main-heading">Unlock Your <span>Potential</span></div>', unsafe_allow_html=True)
 
         current_q = quotes_pool[st.session_state.quote_index]
@@ -80,7 +78,6 @@ if not st.session_state.logged_in:
 
     # Right Half: Styled Container Box for the Login inputs
     with right_col:
-        # st.container puts a clean visual card box around the input fields
         with st.container(border=True):
             st.subheader("Account Authorization Secure Portal")
             st.write("Please sign in with your credential files.")
