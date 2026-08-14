@@ -28,6 +28,8 @@
                 <h2>System Authorization</h2>
                 <p class="subtitle">Please sign in to access your secure voice portal dashboard.</p>
                 <div id="login-error" style="color: #ff4d4d; font-size: 0.9rem; margin-bottom: 1rem; display: none;">Invalid credentials!</div>
+
+                <!-- Fixed form submit to properly run our login function -->
                 <form id="login-form" onsubmit="handleLogin(event)">
                     <div class="input-group">
                         <label>Username</label>
@@ -77,12 +79,14 @@
 
     <!-- ADVANCED AI AUDIO SCRIPT -->
     <script>
+        // Fixed login function that blocks the annoying browser page refresh
         function handleLogin(event) {
-            event.preventDefault();
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+            if (event) event.preventDefault(); // This is the magic line that stops the refresh!
 
-            if(user === "admin" && pass === "nexus123") {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+
+            if (user === "admin" && pass === "nexus123") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-screen').style.display = 'block';
                 speakText("Welcome back, Boss. System is online. Ask me anything.");
@@ -94,6 +98,10 @@
         function handleLogout() {
             document.getElementById('dashboard-screen').style.display = 'none';
             document.getElementById('login-screen').style.display = 'flex';
+            // Clear inputs on logout so it's clean
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('login-error').style.display = 'none';
         }
 
         let isListening = false;
@@ -119,29 +127,17 @@
                 document.getElementById('orb-instruction').innerText = "Click Orb to Speak Again";
             };
 
-                recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('user-transcript').innerText = transcript;
-        processVoiceCommand(transcript);
-    };
-
-    function toggleListening() {
-        if (!recognition) return;
-        if (isListening) {
-            recognition.stop();
-        } else {
-            recognition.start();
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('user-transcript').innerText = transcript;
+                processVoiceCommand(transcript);
+            };
         }
-    }
-}
 
-
-        // Live API Fetcher connecting to a completely free, un-capped text generator brain!
-               async function processVoiceCommand(cmd) {
+        async function processVoiceCommand(cmd) {
             document.getElementById('ai-response').innerText = "Thinking...";
 
             try {
-                // Wrapped cmd in encodeURIComponent to safely handle spaces!
                 const response = await fetch(`https://pollinations.ai{encodeURIComponent(cmd)}?system=You are Ashwanth AI, a helpful voice assistant built by a 10 year old prodigy developer named Ashwanth. Give short, punchy answers that sound great when read out loud in 1 or 2 short sentences.`);
                 const reply = await response.text();
 
@@ -154,6 +150,13 @@
                 speakText(fallback);
             }
         }
+
+        function toggleListening() {
+            if (!recognition) return;
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
             }
         }
 
