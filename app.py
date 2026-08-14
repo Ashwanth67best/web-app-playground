@@ -115,7 +115,7 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
     </style>
-""", unsafe_value_allowed=True)
+""", unsafe_allow_html=True)
 
 # Quote Database for the interactive refresh button
 quotes_pool = [
