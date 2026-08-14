@@ -148,9 +148,18 @@
             };
         }
 
-        function processVoiceCommand(cmd) {
+                function processVoiceCommand(cmd) {
             const text = cmd.toLowerCase().trim();
-            let reply = "I heard you say: '" + cmd + "'.";
+
+            // SUPERPOWER #1: CONFETTI PARTY CANNON
+            if (text.includes('party') || text.includes('celebrate') || text.includes('confetti')) {
+                const reply = "Party mode activated! Great job on your software engineering build, boss!";
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                document.getElementById('ai-response').innerText = reply;
+                speakText(reply);
+                return; // Stops the code here so it doesn't leak downward!
+            }
+
 
             // SUPERPOWER #1: CONFETTI PARTY CANNON
             if (text.includes('party') || text.includes('celebrate') || text.includes('confetti')) {
