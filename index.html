@@ -137,11 +137,11 @@
 
 
         // Live API Fetcher connecting to a completely free, un-capped text generator brain!
-        async function processVoiceCommand(cmd) {
+               async function processVoiceCommand(cmd) {
             document.getElementById('ai-response').innerText = "Thinking...";
 
             try {
-                // This fetches answers from an open text API system instantly
+                // Wrapped cmd in encodeURIComponent to safely handle spaces!
                 const response = await fetch(`https://pollinations.ai{encodeURIComponent(cmd)}?system=You are Ashwanth AI, a helpful voice assistant built by a 10 year old prodigy developer named Ashwanth. Give short, punchy answers that sound great when read out loud in 1 or 2 short sentences.`);
                 const reply = await response.text();
 
@@ -152,6 +152,8 @@
                 let fallback = "Sorry, my neural connection link timed out. Please try asking again.";
                 document.getElementById('ai-response').innerText = fallback;
                 speakText(fallback);
+            }
+        }
             }
         }
 
