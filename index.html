@@ -77,11 +77,10 @@
         </main>
     </div>
 
-    <!-- ADVANCED AI AUDIO SCRIPT -->
+        <!-- ADVANCED AI AUDIO SCRIPT -->
     <script>
-        // Fixed login function that blocks the annoying browser page refresh
         function handleLogin(event) {
-            if (event) event.preventDefault(); // This is the magic line that stops the refresh!
+            if (event) event.preventDefault();
 
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
@@ -98,7 +97,6 @@
         function handleLogout() {
             document.getElementById('dashboard-screen').style.display = 'none';
             document.getElementById('login-screen').style.display = 'flex';
-            // Clear inputs on logout so it's clean
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.getElementById('login-error').style.display = 'none';
@@ -149,6 +147,7 @@
                 document.getElementById('ai-response').innerText = fallback;
                 speakText(fallback);
             }
+        }
 
         function toggleListening() {
             if (!recognition) return;
@@ -167,3 +166,4 @@
     </script>
 </body>
 </html>
+
