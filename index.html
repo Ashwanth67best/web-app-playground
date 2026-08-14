@@ -4,26 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ashwanth Core OS</title>
-    <link rel="stylesheet" href="style.css">
+    <link id="theme-link" rel="stylesheet" href="style.css">
+    <!-- Professional lightweight confetti library script loader -->
+    <script src="https://jsdelivr.net"></script>
 </head>
-<body>
+<body id="app-body">
+
+    <!-- ALARM OVERLAY CONTAINER (Hidden until activated) -->
+    <div id="alarm-overlay" style="display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: red; z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white;">
+        <h1 style="font-size: 5rem; font-weight: 900; animation: blinker 1s linear infinite;">⚠️ WARNING ⚠️</h1>
+        <h2 style="font-size: 3rem; margin: 2rem 0;">CORE SELF-DESTRUCT INITIATED</h2>
+        <div id="countdown-clock" style="font-size: 8rem; font-weight: bold; font-family: monospace;">5</div>
+    </div>
 
     <!-- SECTION 1: THE LOGIN SCREEN -->
     <div id="login-screen" class="split-container">
         <div class="left-panel">
             <div class="logo-container">
-                <h2 class="main-logo-text">Ashwanth<span>.AI</span></h2>
+                <h2 class="main-logo-text">Ashwanth<span id="logo-span">.AI</span></h2>
             </div>
             <div class="quote-center">
                 <span class="quote-icon">“</span>
-                <h1 class="heading">The Ultimate <span class="highlight">Voice Terminal</span></h1>
+                <h1 class="heading">The Ultimate <span class="highlight" id="highlight-span">Voice Terminal</span></h1>
                 <p class="quote-text">"The best way to predict the future is to invent it."</p>
                 <p class="author">— Alan Kay</p>
             </div>
             <div></div>
         </div>
 
-        <div class="right-panel">
+        <div class="right-panel" id="login-right-panel">
             <div class="login-card">
                 <h2>System Authorization</h2>
                 <p class="subtitle">Please sign in to access your secure voice portal dashboard.</p>
@@ -40,7 +49,7 @@
                         <span id="toggle-password-eye" onclick="togglePasswordVisibility()">👁️</span>
                     </div>
 
-                    <button type="submit" class="login-btn">LOGIN &rarr;</button>
+                    <button type="submit" class="login-btn" id="login-btn-element">LOGIN &rarr;</button>
                 </form>
             </div>
             <div class="copyright">Copyright &copy; 2026 Ashwanth. All rights reserved.</div>
@@ -56,7 +65,7 @@
 
         <main class="dash-main">
             <h1 class="dash-title">Ashwanth Voice System v1.0</h1>
-            <p class="dash-status">SYSTEM STATUS: <span style="color: #00C49A; font-weight: bold;">ONLINE</span></p>
+            <p class="dash-status">SYSTEM STATUS: <span id="status-tag" style="color: #00C49A; font-weight: bold;">ONLINE</span></p>
 
             <div class="orb-container">
                 <div id="voice-orb" class="orb-pulsing" onclick="toggleListening()"></div>
@@ -70,24 +79,23 @@
                 </div>
                 <div class="terminal-box">
                     <h3>🤖 Smart AI Response:</h3>
-                    <p id="ai-response" class="log-text">System loaded. Ask me any math question or say hello!</p>
+                    <p id="ai-response" class="log-text">System loaded. Ask math, or test voice commands!</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- ADVANCED AI AUDIO SCRIPT -->
+       <!-- CODE CONTROLLER SCRIPTS -->
     <script>
         function handleLogin(event) {
             if (event) event.preventDefault();
-
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
 
             if (user === "admin" && pass === "nexus123") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-screen').style.display = 'block';
-                speakText("Welcome back, Boss. System is online. Ask me any math question.");
+                speakText("Welcome back, Boss. System is online.");
             } else {
                 document.getElementById('login-error').style.display = 'block';
             }
@@ -98,13 +106,11 @@
             document.getElementById('login-screen').style.display = 'flex';
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
-            document.getElementById('login-error').style.display = 'none';
         }
 
         function togglePasswordVisibility() {
             const passwordField = document.getElementById('password');
             const eyeIcon = document.getElementById('toggle-password-eye');
-
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
                 eyeIcon.innerText = '🔒';
@@ -125,15 +131,13 @@
 
             recognition.onstart = function() {
                 isListening = true;
-                document.getElementById('voice-orb').style.boxShadow = '0 0 50px #ff4d4d';
                 document.getElementById('voice-orb').style.background = '#ff4d4d';
                 document.getElementById('orb-instruction').innerText = "Listening closely...";
             };
 
             recognition.onend = function() {
                 isListening = false;
-                document.getElementById('voice-orb').style.boxShadow = '0 0 30px #00C49A';
-                document.getElementById('voice-orb').style.background = '#00A878';
+                document.getElementById('voice-orb').style.background = 'var(--orb-color, #00A878)';
                 document.getElementById('orb-instruction').innerText = "Click Orb to Speak Again";
             };
 
@@ -143,19 +147,69 @@
                 processVoiceCommand(transcript);
             };
         }
+
         function processVoiceCommand(cmd) {
             const text = cmd.toLowerCase().trim();
-            let reply = "I heard you say: '" + cmd + "'. Ask me any math question or say hello!";
+            let reply = "I heard you say: '" + cmd + "'.";
 
-            // 1. FIXED MATH CALCULATOR CORE
-            if (text.includes('plus') || text.includes('+') || text.includes('add')) {
+            // SUPERPOWER #1: CONFETTI PARTY CANNON
+            if (text.includes('party') || text.includes('celebrate') || text.includes('confetti')) {
+                reply = "Party mode activated! Great job on your software engineering build, boss!";
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            }
+
+            // SUPERPOWER #2: SCI-FI SELF DESTRUCT ALARM
+            else if (text.includes('destruct') || text.includes('self destruct') || text.includes('delete')) {
+                reply = "Emergency command recognized. Commencing core countdown sequencer.";
+                document.getElementById('ai-response').innerText = reply;
+                speakText(reply);
+
+                setTimeout(() => {
+                    document.getElementById('alarm-overlay').style.display = 'flex';
+                    let count = 5;
+                    let interval = setInterval(() => {
+                        count--;
+                        document.getElementById('countdown-clock').innerText = count;
+                        if (count <= 0) {
+                            clearInterval(interval);
+                            document.getElementById('alarm-overlay').style.display = 'none';
+                            handleLogout();
+                        }
+                    }, 1000);
+                }, 2000);
+                return;
+            }
+
+            // SUPERPOWER #3: CHAMELEON VOICE THEME SHIFTER
+            else if (text.includes('theme') || text.includes('mode')) {
+                if (text.includes('matrix') || text.includes('green')) {
+                    document.documentElement.style.setProperty('--main-theme', '#00ff00');
+                    document.documentElement.style.setProperty('--orb-color', '#00ff00');
+                    reply = "Matrix digital theme profile loaded successfully.";
+                } else if (text.includes('pink') || text.includes('neon')) {
+                    document.documentElement.style.setProperty('--main-theme', '#ff007f');
+                    document.documentElement.style.setProperty('--orb-color', '#ff007f');
+                    reply = "Neon cyberpunk pink assets compiled.";
+                } else if (text.includes('black') || text.includes('stealth')) {
+                    document.documentElement.style.setProperty('--main-theme', '#333333');
+                    document.documentElement.style.setProperty('--orb-color', '#111111');
+                    reply = "Stealth night operator dark mode locked in.";
+                } else if (text.includes('normal') || text.includes('reset')) {
+                    document.documentElement.style.setProperty('--main-theme', '#00A878');
+                    document.documentElement.style.setProperty('--orb-color', '#00A878');
+                    reply = "Restoring basic system default colors.";
+                }
+            }
+
+            // ADVANCED MATH ENGINE
+            else if (text.includes('plus') || text.includes('+') || text.includes('add')) {
                 let numbers = text.match(/\d+/g);
                 if (numbers && numbers.length >= 2) {
                     let result = Number(numbers[0]) + Number(numbers[1]);
                     reply = numbers[0] + " plus " + numbers[1] + " equals " + result + ", boss!";
                 }
             }
-            else if (text.includes('minus') || text.includes('-') || text.includes('subtract')) {
+            else if (text.includes('minus') || text.includes('-') || text.includes('–') || text.includes('—') || text.includes('subtract')) {
                 let numbers = text.match(/\d+/g);
                 if (numbers && numbers.length >= 2) {
                     let result = Number(numbers[0]) - Number(numbers[1]);
@@ -170,37 +224,21 @@
                 }
             }
 
-            // 2. FUN CHAT COMMANDS
+            // DEFAULT TALK RULES
             else if (text.includes('hello') || text.includes('hi')) {
                 reply = "Hello! Welcome to your custom command terminal. I am online and ready, boss!";
             }
-            else if (text.includes('name')) {
-                reply = "My system designation is Ashwanth AI, custom engineered by a prodigy.";
-            }
-            else if (text.includes('old') || text.includes('age')) {
-                reply = "My software core was deployed today, but my creator Ashwanth is an awesome 10-year-old developer!";
-            }
             else if (text.includes('joke')) {
-                const jokes = [
-                    "Why don't scientists trust atoms? Because they make up everything!",
-                    "What do you call a fake noodle? An impasta!",
-                    "Why did the computer go to the doctor? Because it had a virus!"
-                ];
-                reply = jokes[Math.floor(Math.random() * jokes.length)];
+                reply = "Why don't scientists trust atoms? Because they make up everything!";
             }
 
             document.getElementById('ai-response').innerText = reply;
             speakText(reply);
         }
 
-
         function toggleListening() {
             if (!recognition) return;
-            if (isListening) {
-                recognition.stop();
-            } else {
-                recognition.start();
-            }
+            if (isListening) { recognition.stop(); } else { recognition.start(); }
         }
 
         function speakText(text) {

@@ -258,3 +258,12 @@
     font-size: 1.1rem;
     color: #e5e7eb;
 }
+#toggle-password-eye {
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+    font-size: 1.2rem;
+    user-select: none;
+}
