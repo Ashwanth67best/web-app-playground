@@ -1,115 +1,213 @@
 import streamlit as st
 
-# Force full screen mode and add a browser page title
-st.set_page_config(page_title="Nexus Premium Portal", layout="wide", initial_sidebar_state="collapsed")
+# Setup the page browser titles
+st.set_page_config(page_title="Ashwanth Core OS", page_icon="🤖", layout="wide")
 
-# Simple CSS to style the fonts and hide the default Streamlit header bar
+# Custom premium styling for the beautiful split screen layout
 st.markdown("""
-    <style>
-    header, footer {
-        visibility: hidden !important;
+<style>
+    /* Clean background system reset */
+    .stApp {
+        background-color: #0b0f19;
+        color: #ffffff;
     }
-    .main-heading {
-        font-size: 3rem;
-        font-weight: 800;
+
+    /* Left half side panel design */
+    .left-panel {
+        background-color: #ffffff;
         color: #111827;
-        margin-top: 2rem;
+        padding: 3rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
     }
-    .main-heading span {
+
+    .main-logo-text {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .main-logo-text span {
         color: #00A878;
     }
-    .quote-text {
-        font-size: 1.4rem;
-        color: #4B5563;
-        font-style: italic;
+
+    .highlight {
+        color: #00A878;
+        font-weight: bold;
+    }
+
+    /* Premium high-tech login card */
+    .login-card {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 2.5rem;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Glowing audio orb layout styles */
+    .orb-container {
+        text-align: center;
+        margin: 3rem 0;
+    }
+
+    .voice-orb {
+        width: 130px;
+        height: 130px;
+        background: #00A878;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 30px #00C49A;
+        animation: floatOrb 2s infinite ease-in-out;
+    }
+
+    @keyframes floatOrb {
+        0% { transform: scale(1); opacity: 0.9; }
+        50% { transform: scale(1.06); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.9; }
+    }
+
+    /* Custom terminals feed boxes */
+    .terminal-box {
+        background-color: #111827;
+        border: 1px solid #1f293d;
+        padding: 1.5rem;
+        border-radius: 16px;
+        font-family: monospace;
+        font-size: 1.1rem;
         margin-top: 1rem;
     }
-    .quote-author {
-        font-size: 1.1rem;
-        color: #9CA3AF;
-        font-weight: 600;
-        margin-top: 0.5rem;
-    }
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
-# Quote pool data
-quotes_pool = [
-    {"text": "The secret of getting ahead is getting started. The complex is made simple one step at a time.",
-     "author": "Mark Twain"},
-    {"text": "Believe you can and you're halfway there. Great achievements begin with a decision to try.",
-     "author": "Theodore Roosevelt"},
-    {"text": "The only way to do great work is to love what you do. Keep looking, don't settle.",
-     "author": "Steve Jobs"}
-]
-
-# State management initialization
+# Initialize application security tracker keys
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-if "quote_index" not in st.session_state:
-    st.session_state.quote_index = 0
+if "show_password" not in st.session_state:
+    st.session_state.show_password = False
 
-# --- VIEW 1: LOGIN PAGE ---
+# ==========================================
+# GATE SCREEN 1: SPLIT SECURE SYSTEM AUTHORIZATION
+# ==========================================
 if not st.session_state.logged_in:
+    col1, col2 = st.columns(2, gap="large")
 
-    # Make two clean, balanced screen halves using Streamlit's official columns
-    left_col, right_col = st.columns(2, gap="large")
+    # Left Branding Frame Panel Layout
+    with col1:
+        st.markdown("""
+        <div class="left-panel">
+            <h2 class="main-logo-text">Ashwanth<span>.AI</span></h2>
+            <br><br>
+            <span style="font-size: 5rem; opacity: 0.15;">“</span>
+            <h1 style="font-size: 2.5rem; font-weight: 800; margin-top:-2rem;">The Ultimate <span class="highlight">Voice Terminal</span></h1>
+            <p style="font-size: 1.2rem; font-style: italic; color: #4B5563; margin-top: 1rem;">
+                "The best way to predict the future is to invent it."
+            </p>
+            <p style="font-weight: 600; color: #9CA3AF; letter-spacing: 1px;">— ALAN KAY</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    # Left Half: Clean Text Layout + Real Image Logo
-    with left_col:
-        # Load the official logo asset safely
-        try:
-            st.image("nexus_logo.png", width=180)
-        except:
-            # Fallback text just in case the file name doesn't match yet
-            st.markdown('<h2 style="color:#111827;">nexus</h2>', unsafe_allow_html=True)
+    # Right Input Form Panel Layout
+    with col2:
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.subheader("System Authorization")
+        st.caption("Please sign in to access your secure voice portal dashboard.")
 
-        st.markdown('<div class="main-heading">Unlock Your <span>Potential</span></div>', unsafe_allow_html=True)
+        user_input = st.text_input("Username", placeholder="Enter 'admin'...")
 
-        current_q = quotes_pool[st.session_state.quote_index]
-        st.markdown(f'<div class="quote-text">"{current_q["text"]}"</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="quote-author">— {current_q["author"]}</div>', unsafe_allow_html=True)
+        # Interactive toggling text vs secret dot view box engine
+        pass_type = "text" if st.session_state.show_password else "password"
+        pass_input = st.text_input("Password", type=pass_type, placeholder="Enter your key...")
 
-        st.write("")  # Add some spacing
+        # The Checkbox tool that mimics your custom eye tracker button click
+        if st.checkbox("Show Secret Passkey Characters 👁️"):
+            st.session_state.show_password = True
+        else:
+            st.session_state.show_password = False
 
-        if st.button("🔄 Shuffle Quote Link", use_container_width=False):
-            st.session_state.quote_index = (st.session_state.quote_index + 1) % len(quotes_pool)
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.button("LOGIN TO SYSTEMS &rarr;", use_container_width=True):
+            # Change 'nexus123' here if you want to switch up your password!
+            if user_input.strip() == "admin" and pass_input.strip() == "nexus123":
+                st.session_state.logged_in = True
+                st.rerun()
+            else:
+                st.error("Invalid secure developer credentials matching parameters!")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# ==========================================
+# HUB SCREEN 2: MAIN VOICE CORES CONTROL PANEL
+# ==========================================
+else:
+    # Top Status Navigation bar panels
+    head_col1, head_col2 = st.columns([4, 1])
+    with head_col1:
+        st.markdown('<h2 class="main-logo-text" style="color: white;">Ashwanth<span>.AI</span></h2>',
+                    unsafe_allow_html=True)
+    with head_col2:
+        if st.button("LOGOUT 🚪", use_container_width=True):
+            st.session_state.logged_in = False
             st.rerun()
 
-    # Right Half: Styled Container Box for the Login inputs
-    with right_col:
-        with st.container(border=True):
-            st.subheader("Account Authorization Secure Portal")
-            st.write("Please sign in with your credential files.")
+    st.markdown("<hr style='border-color: #1f293d;'>", unsafe_allow_html=True)
 
-            user_input = st.text_input("Username / Email Address", placeholder="Enter account username...",
-                                       key="user_field")
-            pass_input = st.text_input("Account Password Key", type="password", placeholder="••••••••",
-                                       key="pass_field")
+    st.markdown("<h1 style='text-align: center;'>Ashwanth Voice System v1.0</h1>", unsafe_allow_html=True)
+    st.markdown(
+        "<p style='text-align: center; color: #9CA3AF;'>SYSTEM STATUS: <span style='color: #00C49A; font-weight: bold;'>ONLINE</span></p>",
+        unsafe_allow_html=True)
 
-            st.write("")
+    # Glowing Pulsing Graphic Representation Orb
+    st.markdown("""
+    <div class="orb-container">
+        <div class="voice-orb"></div>
+    </div>
+    """, unsafe_allow_html=True)
 
-            if st.button("LOGIN →", use_container_width=True, type="primary"):
-                if user_input == "admin" and pass_input == "nexus123":
-                    st.session_state.logged_in = True
-                    st.rerun()
-                elif not user_input or not pass_input:
-                    st.warning("Please fill out both entry slots.")
-                else:
-                    st.error("Invalid passcode combination entered.")
+    # Simple input bar to replace broken browser mic links safely!
+    st.markdown(
+        "<p style='text-align: center; color: #9CA3AF; font-weight: bold;'>🗣️ Type or Say Your Command Below:</p>",
+        unsafe_allow_html=True)
+    voice_command = st.text_input("", placeholder="Type math question here, like 'What is 52 minus 32'...",
+                                  label_visibility="collapsed")
 
-# --- VIEW 2: LOGGED IN PREMIUM DASHBOARD ---
-else:
-    st.balloons()
-    st.title("🚀 Premium Web Workspace App")
-    st.write("---")
+    if voice_command:
+        cmd_text = voice_command.lower().strip()
+        reply_msg = f"I heard you say: '{voice_command}'. Ask me any math or say hello!"
 
-    col1, col2 = st.columns(2)
-    col1.metric("Server Connection Status", "100% Online", "Optimal")
-    col2.metric("Development Budget Saved", "1,000 INR", "100%")
+        # ADVANCED MATHEMATICAL CALCULATORS CORE (Reads spoken digits seamlessly!)
+        import re
 
-    st.success("Authorized account profile verified securely.")
+        numbers = re.findall(r'\d+', cmd_text)
 
-    if st.button("🚪 Disconnect Secure Session", type="primary"):
-        st.session_state.logged_in = False
-        st.rerun()
+        if any(x in cmd_text for x in ['plus', '+', 'add']) and len(numbers) >= 2:
+            res = int(numbers[0]) + int(numbers[1])
+            reply_msg = f"{numbers[0]} plus {numbers[1]} equals {res}, boss!"
+
+        elif any(x in cmd_text for x in ['minus', '-', '–', '—', 'subtract']) and len(numbers) >= 2:
+            res = int(numbers[0]) - int(numbers[1])
+            reply_msg = f"{numbers[0]} minus {numbers[1]} equals {res}, boss!"
+
+        elif any(x in cmd_text for x in ['times', 'multiply', 'x']) and len(numbers) >= 2:
+            res = int(numbers[0]) * int(numbers[1])
+            reply_msg = f"{numbers[0]} times {numbers[1]} equals {res}, boss!"
+
+        # TALK COMBINATIONS LOGIC CHANNELS
+        elif 'hello' in cmd_text or 'hi' in cmd_text:
+            reply_msg = "Hello! Welcome back to your custom command terminal. I am online and ready, boss!"
+        elif 'name' in cmd_text:
+            reply_msg = "My structural design name is set to Ashwanth AI, custom engineered by a prodigy coder."
+        elif 'old' in cmd_text or 'age' in cmd_text:
+            reply_msg = "My software core module matrix compiled today, but my creator Ashwanth is an awesome 10-year-old!"
+        elif 'joke' in cmd_text:
+            reply_msg = "Why did the computer go to the doctor? Because it had a virus! Haha!"
+
+        # Show logs values interactively on grid columns structures
+        t_col1, t_col2 = st.columns(2)
+        with t_col1:
+            st.markdown(f"<h3>🗣️ What You Said:</h3><div class='terminal-box'>{voice_command}</div>",
+                        unsafe_allow_html=True)
+        with t_col2:
+            st.markdown(
+                f"<h3>🤖 System Response:</h3><div class='terminal-box' style='color: #00C49A;'>{reply_msg}</div>",
+                unsafe_allow_html=True)
